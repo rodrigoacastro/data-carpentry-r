@@ -45,17 +45,48 @@ respondent_floor_type
 
 levels(respondent_floor_type)[2] = "brick"
 
+year_fct = factor(c(1990,1983,1977,1998,1990))
 
-#
-ex1 = c("rod","bob","tina","rod")
-ex1
+as.numeric(as.character(year_fct))
+as.numeric((year_fct))
+as.numeric(levels(year_fct))[year_fct]
 
-ex1 = as.factor(ex1)
-ex1
+affect_conflicts = interviews$affect_conflicts
+affect_conflicts = factor(affect_conflicts)
+affect_conflicts
 
-levels(ex1)
-levels(ex1)[2] = "gary"
-ex1
+levels(affect_conflicts)
 
-ex1 = as.character(ex1)
-ex1
+#levels(affect_conflicts)[2] = "more_than_once"
+
+plot(affect_conflicts)
+
+
+affect_conflicts = interviews$affect_conflicts
+NA_pos = is.na(affect_conflicts)
+
+affect_conflicts = as.character(affect_conflicts)
+affect_conflicts[NA_pos] = 000000
+
+affect_conflicts[NA_pos] = gsub(000000,"undetermined",affect_conflicts[NA_pos])
+
+
+affect_conflicts = as.factor(affect_conflicts)
+affect_conflicts
+plot(affect_conflicts)
+#affect_conflicts[is.na(affect_conflicts)] = "undetermined"
+
+
+
+#affect_conflicts [is.na(affect_conflicts)] = "undetermined"
+
+# DATETIMES - lubridate package
+
+require("lubridate")
+
+dates = interviews$interview_date
+head(date)
+
+# fix if dates has not been recognized
+dates = ymd_hms(dates)
+
