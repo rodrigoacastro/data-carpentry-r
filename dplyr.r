@@ -120,4 +120,31 @@ interviews_plotting = interviews %>% # data
   mutate(number_month_lack_food=rowSums(select(.,Apr:Sept))) %>% # create new column for food
   mutate(number_items=rowSums(select(.,bicycle:television))) # create new column for items
 
-write_csv()
+# export data
+write_csv(interviews_plotting, path = "data_output/interviews_plotting.csv")
+
+
+### dividing into 2 or 3
+
+# items
+interviews_plotting2 = interviews %>% # data
+  mutate (split_items = str_split(items_owned,";")) %>%  # split items
+  unnest() %>% # unlist items
+  mutate(items_owned_logical = TRUE) %>%  # create new column for items
+  spread(key = split_items, value = items_owned_logical,  fill = FALSE) %>% # spread items in new columns
+  rename(no_listed_items = '<NA>')  # rename spare colums
+
+# months
+interviews_plotting3 = interviews_plotting2 %>% # data
+  mutate(split_months = str_split(months_lack_food, ";")) %>% # split months
+  unnest() # unlist months
+
+# food
+interviews_plotting4 =  interviews_plotting3 %>% # data
+  mutate(months_lack_food_logical = TRUE) %>% # create new column for months
+  spread(key=split_months, value=months_lack_food_logical, fill = FALSE) %>% # spread items in new columns
+  mutate(number_month_lack_food=rowSums(select(.,Apr:Sept))) %>% # create new column for food
+  mutate(number_items=rowSums(select(.,bicycle:television))) # create new column for items
+
+# division successfull
+identical (interviews_plotting4,interviews_plotting)
