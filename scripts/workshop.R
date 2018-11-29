@@ -90,3 +90,11 @@ head(date)
 # fix if dates has not been recognized
 dates = ymd_hms(dates)
 
+str(dates)
+
+interviews$day = day(dates)
+interviews$month = month(dates)
+interviews$year = year(dates)
+
+str(interviews)
+
