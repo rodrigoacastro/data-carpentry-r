@@ -52,11 +52,15 @@ interview_plot + geom_jitter(aes(color = village), alpha=0.5)
 # village = Ruaca
 ggplot(filter(interviews_plotting,village == "Ruaca"),
        aes(x=no_membrs, y=number_items)) + # stetics
-  geom_point() # geometry
+  geom_jitter(aes(color=village),alpha=0.5) # geometry
 
 
 ggplot(data=interviews_plotting, aes(x=village, y=rooms)) + # stetics
   geom_jitter(aes(color=respondent_wall_type)) # geometry
 
-
+ggplot(data=interviews_plotting, 
+       aes(x=respondent_wall_type, y=rooms)) + # stetics
+       geom_boxplot(alpha=1) + # geometry
+       geom_jitter(alpha=0.5, color = "tomato") +
+       theme_light() # background
 
