@@ -32,3 +32,55 @@ identical (interviews_god, interviews_god2)
 interviews %>% dplyr::filter (village == "God") %>% 
             select (no_membrs, years_liv)
 
+# Pipes
+
+interviews %>% dplyr::filter (memb_assoc == "yes") %>% 
+  select (affect_conflicts, liv_count, no_meals)
+
+
+# Mutate
+
+interviews3 = interviews %>%
+                mutate(total_meals = no_membrs * no_meals)
+
+colnames(interviews3)
+
+###
+
+interviews4 = interviews %>%
+                mutate(people_per_room = no_membrs / rooms)
+
+round(interviews4$people_per_room,2)
+
+# Transmute
+interviews_total_meals = interviews %>%
+  transmute(total_meals = no_membrs * no_meals)
+
+interviews_total_meals
+
+
+######### summarizing
+
+mean(interviews$no_membrs)
+
+interviews %>% group_by(village) %>%
+    summarize(mean_no_members = mean (no_membrs))
+
+interviews %>% group_by(village) %>%
+    filter(memb_assoc == "yes") %>%
+    summarize (mean_no_membrs = mean (no_membrs))
+
+interviews %>%  summarise (mean_no_membrs = mean (no_membrs))
+
+#######
+interviews %>% group_by(village,memb_assoc) %>%
+  summarize (mean_no_membrs = mean (no_membrs))
+
+interviews %>% #group_by(village) %>%
+  group_by(memb_assoc) %>%
+  summarize (mean_no_membrs = mean (no_membrs))
+
+interviews %>% count(village)
+interviews %>% count(village, sort = TRUE)
+
+#######
