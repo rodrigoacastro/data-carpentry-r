@@ -84,3 +84,12 @@ interviews %>% count(village)
 interviews %>% count(village, sort = TRUE)
 
 #######
+
+interviews %>% group_by(village,memb_assoc) %>%
+  summarize (mean_membrs = mean (no_membrs),
+             min_membrs = min (no_membrs),
+               max_membrs = max (no_membrs),
+             n())
+
+
+
