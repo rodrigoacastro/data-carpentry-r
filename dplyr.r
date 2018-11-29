@@ -91,5 +91,33 @@ interviews %>% group_by(village,memb_assoc) %>%
                max_membrs = max (no_membrs),
              n())
 
+# reshaping data
 
+# creating more logical columns
+interviews = interviews %>% mutate (wall_type_logical = TRUE) %>%  
+              spread(key = respondent_wall_type, 
+                     value = wall_type_logical, fill = FALSE)
 
+# compressing several columns into one
+interviews = interviews %>% 
+  gather(key = respondent_wall_type, 
+          value = "wall_type_logical", burntbricks:sunbricks)
+
+# prepare 
+
+interviews = read_csv("data/SAFI_clean.csv",na="NULL")
+
+interviews_plotting = interviews %>% # data
+  mutate (split_items = str_split(items_owned,";")) %>%  # split items
+  unnest() %>% # unlist items
+  mutate(items_owned_logical = TRUE) %>%  # create new column for items
+  spread(key = split_items, value = items_owned_logical,  fill = FALSE) %>% # spread items in new columns
+  rename(no_listed_items = '<NA>')  %>% # rename spare colums 
+  mutate(split_months = str_split(months_lack_food, ";")) %>% # split months
+  unnest() %>% # unlist months
+  mutate(months_lack_food_logical = TRUE) %>% # create new column for months
+  spread(key=split_months, value=months_lack_food_logical, fill = FALSE) %>% # spread items in new columns
+  mutate(number_month_lack_food=rowSums(select(.,Apr:Sept))) %>% # create new column for food
+  mutate(number_items=rowSums(select(.,bicycle:television))) # create new column for items
+
+write_csv()
