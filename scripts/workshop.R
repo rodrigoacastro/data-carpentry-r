@@ -88,6 +88,7 @@ dates = interviews$interview_date
 head(date)
 
 # fix if dates has not been recognized
+# only needed for read.csv, not read_csv
 dates = ymd_hms(dates)
 
 str(dates)
@@ -97,4 +98,3 @@ interviews$month = month(dates)
 interviews$year = year(dates)
 
 str(interviews)
-
