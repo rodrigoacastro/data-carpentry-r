@@ -108,15 +108,18 @@ interviews = interviews %>%
 interviews = read_csv("data/SAFI_clean.csv",na="NULL")
 
 interviews_plotting = interviews %>% # data
+  # spread data by items_owned
   mutate (split_items = str_split(items_owned,";")) %>%  # split items
   unnest() %>% # unlist items
   mutate(items_owned_logical = TRUE) %>%  # create new column for items
   spread(key = split_items, value = items_owned_logical,  fill = FALSE) %>% # spread items in new columns
   rename(no_listed_items = '<NA>')  %>% # rename spare colums 
+  # spread data by months_lack_food
   mutate(split_months = str_split(months_lack_food, ";")) %>% # split months
   unnest() %>% # unlist months
   mutate(months_lack_food_logical = TRUE) %>% # create new column for months
   spread(key=split_months, value=months_lack_food_logical, fill = FALSE) %>% # spread items in new columns
+  # add some summary
   mutate(number_month_lack_food=rowSums(select(.,Apr:Sept))) %>% # create new column for food
   mutate(number_items=rowSums(select(.,bicycle:television))) # create new column for items
 
@@ -124,7 +127,7 @@ interviews_plotting = interviews %>% # data
 write_csv(interviews_plotting, path = "data_output/interviews_plotting.csv")
 
 
-### dividing into 2 or 3
+### dividing into 3 steps
 
 # items
 interviews_plotting2 = interviews %>% # data
@@ -134,15 +137,15 @@ interviews_plotting2 = interviews %>% # data
   spread(key = split_items, value = items_owned_logical,  fill = FALSE) %>% # spread items in new columns
   rename(no_listed_items = '<NA>')  # rename spare colums
 
-# months
+# months lacking food
 interviews_plotting3 = interviews_plotting2 %>% # data
   mutate(split_months = str_split(months_lack_food, ";")) %>% # split months
   unnest() # unlist months
-
-# food
-interviews_plotting4 =  interviews_plotting3 %>% # data
   mutate(months_lack_food_logical = TRUE) %>% # create new column for months
   spread(key=split_months, value=months_lack_food_logical, fill = FALSE) %>% # spread items in new columns
+  
+# summary
+interviews_plotting4 =  interviews_plotting3 %>% # data
   mutate(number_month_lack_food=rowSums(select(.,Apr:Sept))) %>% # create new column for food
   mutate(number_items=rowSums(select(.,bicycle:television))) # create new column for items
 
