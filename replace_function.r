@@ -27,6 +27,8 @@ string = ex1
 ############
 
 substitute_string = function(old_term,new_term, string) {
+  
+# is_character from purrr function
   # check if all arguments are strings
   if (!is_character(old_term)) {
     cat("old_term must be a string")

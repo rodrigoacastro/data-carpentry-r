@@ -14,5 +14,6 @@ replaceNAinLevel = function(factor_vector,new_string="undetermined") {
   
 }
 
+# TEST
 
 replaceNAinLevel(affect_conflicts2)
